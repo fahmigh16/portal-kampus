@@ -1,0 +1,593 @@
+<!DOCTYPE html>
+<html lang="id">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>[DUMMY] Portal SIMAK Fiktif — VERSI RENTAN</title>
+<style>
+  *{box-sizing:border-box;margin:0;padding:0}
+  body{font-family:'Segoe UI',sans-serif;background:#f0f2f5;color:#222}
+  .banner{background:#b91c1c;color:#fff;text-align:center;padding:8px;font-weight:700;font-size:13px;letter-spacing:1px}
+  nav{background:#1e3a5f;color:#fff;display:flex;align-items:center;padding:0 24px;height:52px;gap:16px}
+  nav .brand{font-size:18px;font-weight:700;margin-right:auto}
+  nav button{background:none;border:none;color:#cbd5e1;cursor:pointer;font-size:13px;padding:6px 10px;border-radius:4px}
+  nav button:hover,nav button.active{background:#2563eb;color:#fff}
+  nav #nav-user{color:#94a3b8;font-size:12px;margin-left:8px}
+  nav #btn-logout{color:#f87171}
+  .container{max-width:960px;margin:24px auto;padding:0 16px}
+  .card{background:#fff;border-radius:8px;box-shadow:0 1px 4px #0001;padding:24px;margin-bottom:20px}
+  h2{font-size:16px;font-weight:700;margin-bottom:16px;color:#1e3a5f}
+  table{width:100%;border-collapse:collapse;font-size:13px}
+  th{background:#f1f5f9;text-align:left;padding:8px 10px;border-bottom:2px solid #e2e8f0}
+  td{padding:8px 10px;border-bottom:1px solid #f1f5f9}
+  tr:last-child td{border:none}
+  input,select,textarea{width:100%;padding:8px 10px;border:1px solid #cbd5e1;border-radius:5px;font-size:13px;margin-bottom:10px}
+  textarea{height:80px;resize:vertical}
+  button.btn{padding:8px 18px;border:none;border-radius:5px;cursor:pointer;font-size:13px;font-weight:600}
+  .btn-primary{background:#2563eb;color:#fff}
+  .btn-danger{background:#dc2626;color:#fff}
+  .btn-sm{padding:4px 10px;font-size:12px}
+  .badge{display:inline-block;padding:2px 8px;border-radius:99px;font-size:11px;font-weight:700}
+  .badge-a{background:#dcfce7;color:#15803d}
+  .badge-b{background:#dbeafe;color:#1d4ed8}
+  .badge-c{background:#fef9c3;color:#a16207}
+  .badge-d{background:#fee2e2;color:#b91c1c}
+  .msg{padding:10px 14px;border-radius:6px;margin-bottom:10px;font-size:13px}
+  .msg-ok{background:#dcfce7;color:#15803d}
+  .msg-err{background:#fee2e2;color:#b91c1c}
+  .vuln-note{background:#fef3c7;border-left:4px solid #f59e0b;padding:8px 12px;font-size:12px;margin-bottom:12px;color:#92400e}
+  .section{display:none}
+  .section.active{display:block}
+  /* login */
+  .login-wrap{max-width:380px;margin:60px auto}
+  .login-wrap .card{padding:32px}
+  .login-wrap h1{font-size:20px;font-weight:700;color:#1e3a5f;margin-bottom:4px}
+  .login-wrap p{font-size:12px;color:#64748b;margin-bottom:20px}
+  /* diskusi */
+  .post{background:#f8fafc;border-radius:6px;padding:12px;margin-bottom:10px;font-size:13px}
+  .post .meta{font-size:11px;color:#94a3b8;margin-bottom:4px}
+  /* upload */
+  .file-list .fi{display:flex;align-items:center;gap:10px;font-size:13px;padding:6px 0;border-bottom:1px solid #f1f5f9}
+  .fi-name{flex:1}
+  .fi-size{color:#94a3b8;font-size:11px}
+</style>
+</head>
+<body>
+
+
+<nav id="main-nav" style="display:none">
+  <span class="brand">SIMAK Poltek Nusantara</span>
+  <button class="nav-btn" data-sec="nilai">Nilai</button>
+  <button class="nav-btn" data-sec="tugas">Tugas</button>
+  <button class="nav-btn" data-sec="diskusi">Diskusi</button>
+  <button class="nav-btn" data-sec="admin" id="nav-admin" style="display:none">Admin</button>
+  <button class="nav-btn" data-sec="dosen" id="nav-dosen" style="display:none">Nilai Mahasiswa</button>
+  <span id="nav-user"></span>
+  <button id="btn-logout" class="btn btn-sm">Logout</button>
+</nav>
+
+<!-- ==================== LOGIN ==================== -->
+<div id="sec-login" class="section active">
+  <div class="login-wrap">
+    <div class="card">
+      <h1>SIMAK Poltek Nusantara</h1>
+      <p>Sistem Informasi Akademik — Data Fiktif</p>
+      <!-- KERENTANAN 3: tidak ada rate limit login (brute-force bebas) -->
+      <div class="vuln-note">⚠ [RENTAN] Tidak ada pembatasan percobaan login. Brute-force bebas.</div>
+      <label style="font-size:12px;font-weight:600">Username</label>
+      <input id="inp-user" placeholder="username" autocomplete="off">
+      <label style="font-size:12px;font-weight:600">Password</label>
+      <input id="inp-pass" type="password" placeholder="password">
+      <div id="login-msg"></div>
+      <button class="btn btn-primary" style="width:100%;margin-top:4px" onclick="doLogin()">Masuk</button>
+      <div style="margin-top:14px;font-size:11px;color:#94a3b8">
+        <b>Akun Demo:</b><br>
+        mhs: <code>budi.s</code> / <code>Budi@2024</code><br>
+        mhs: <code>citra.d</code> / <code>Citra@2024</code><br>
+        dosen: <code>dr.hendra</code> / <code>Dosen@2024</code><br>
+        admin: <code>sysadmin</code> / <code>Admin@2024</code>
+      </div>
+    </div>
+  </div>
+</div>
+
+<!-- ==================== NILAI ==================== -->
+<div id="sec-nilai" class="section">
+<div class="container">
+  <!-- KERENTANAN 1: IDOR — URL param ?npm=xxx tidak divalidasi kepemilikan -->
+  <div class="card">
+    <div class="vuln-note">
+      ⚠ [RENTAN — IDOR] Parameter <code>?npm=</code> di URL tidak divalidasi. Ganti NPM di address bar untuk lihat nilai mahasiswa lain.<br>
+      Contoh: tambahkan <code>?npm=24781002</code> di URL untuk lihat nilai Citra.
+    </div>
+    <h2>📊 Nilai Akademik</h2>
+    <div style="margin-bottom:12px;font-size:13px">
+      Menampilkan nilai untuk NPM: <b id="tampil-npm"></b>
+      <input id="inp-npm-idor" placeholder="Masukkan NPM (IDOR demo)" style="width:180px;display:inline-block;margin-left:10px;margin-bottom:0">
+      <button class="btn btn-primary btn-sm" onclick="loadNilaiIDOR()">Lihat</button>
+    </div>
+    <table id="tbl-nilai">
+      <thead><tr><th>Mata Kuliah</th><th>SKS</th><th>Nilai Huruf</th><th>Nilai Angka</th><th>Semester</th></tr></thead>
+      <tbody id="tbody-nilai"></tbody>
+    </table>
+  </div>
+</div>
+</div>
+
+<!-- ==================== TUGAS ==================== -->
+<div id="sec-tugas" class="section">
+<div class="container">
+  <div class="card">
+    <!-- KERENTANAN: Validasi berkas lemah (ekstensi tidak dicek) -->
+    <div class="vuln-note">⚠ [RENTAN] Upload menerima semua jenis file termasuk .php, .exe, .js — tidak ada validasi ekstensi/tipe.</div>
+    <h2>📁 Upload Tugas</h2>
+    <select id="sel-matkul"><option value="">-- Pilih Mata Kuliah --</option></select>
+    <input id="inp-keterangan" placeholder="Keterangan tugas...">
+    <input type="file" id="inp-file" style="margin-bottom:10px">
+    <button class="btn btn-primary" onclick="doUpload()">Upload</button>
+    <div id="upload-msg" style="margin-top:10px"></div>
+  </div>
+  <div class="card">
+    <h2>📋 Riwayat Upload</h2>
+    <div id="file-list" class="file-list"></div>
+  </div>
+</div>
+</div>
+
+<!-- ==================== DISKUSI ==================== -->
+<div id="sec-diskusi" class="section">
+<div class="container">
+  <div class="card">
+    <!-- KERENTANAN 2: Stored XSS — input tidak di-sanitize, langsung innerHTML -->
+    <div class="vuln-note">
+      ⚠ [RENTAN — Stored XSS] Pesan diskusi disimpan dan ditampilkan tanpa sanitasi.<br>
+      Coba kirim: <code>&lt;img src=x onerror="alert('XSS: '+document.cookie)"&gt;</code>
+    </div>
+    <h2>💬 Forum Diskusi</h2>
+    <textarea id="inp-pesan" placeholder="Tulis pesan... (coba payload XSS)"></textarea>
+    <button class="btn btn-primary" onclick="kirimPesan()">Kirim</button>
+  </div>
+  <div class="card">
+    <h2>Percakapan</h2>
+    <div id="daftar-pesan"></div>
+  </div>
+</div>
+</div>
+
+<!-- ==================== DOSEN ==================== -->
+<div id="sec-dosen" class="section">
+<div class="container">
+  <div class="card">
+    <h2>📝 Beri Nilai Mahasiswa</h2>
+    <select id="sel-mhs-dosen" style="margin-bottom:10px"></select>
+    <select id="sel-mk-dosen" style="margin-bottom:10px"></select>
+    <div style="display:flex;gap:10px;align-items:center;margin-bottom:10px">
+      <select id="sel-grade" style="margin-bottom:0;width:auto">
+        <option>A</option><option>B+</option><option>B</option>
+        <option>C+</option><option>C</option><option>D</option><option>E</option>
+      </select>
+      <button class="btn btn-primary" onclick="beriNilai()">Simpan Nilai</button>
+    </div>
+    <div id="dosen-msg"></div>
+  </div>
+  <div class="card">
+    <h2>Semua Nilai Mahasiswa</h2>
+    <table><thead><tr><th>NPM</th><th>Nama</th><th>Mata Kuliah</th><th>Nilai</th></tr></thead>
+    <tbody id="tbody-dosen-nilai"></tbody></table>
+  </div>
+</div>
+</div>
+
+<!-- ==================== ADMIN ==================== -->
+<div id="sec-admin" class="section">
+<div class="container">
+  <div class="card">
+    <!-- KERENTANAN: Eskalasi hak akses — mahasiswa bisa akses /admin jika tahu URL -->
+    <div class="vuln-note">⚠ [RENTAN — Eskalasi Hak Akses] Halaman admin hanya disembunyikan di UI, bukan diproteksi. Klik tombol Admin di nav atau ganti hash ke #admin untuk akses tanpa hak.</div>
+    <h2>⚙ Manajemen Akun</h2>
+    <table>
+      <thead><tr><th>Username</th><th>Nama</th><th>Role</th><th>NPM/NIP</th><th>Aksi</th></tr></thead>
+      <tbody id="tbody-admin"></tbody>
+    </table>
+  </div>
+  <div class="card">
+    <h2>Tambah Akun</h2>
+    <div style="display:grid;grid-template-columns:1fr 1fr;gap:10px">
+      <input id="new-uname" placeholder="Username">
+      <input id="new-pass" placeholder="Password">
+      <input id="new-nama" placeholder="Nama Lengkap">
+      <input id="new-npm" placeholder="NPM / NIP">
+      <select id="new-role" style="margin-bottom:0">
+        <option value="mahasiswa">Mahasiswa</option>
+        <option value="dosen">Dosen</option>
+        <option value="admin">Admin</option>
+      </select>
+    </div>
+    <button class="btn btn-primary" style="margin-top:10px" onclick="tambahAkun()">Tambah Akun</button>
+    <div id="admin-msg" style="margin-top:8px"></div>
+  </div>
+</div>
+</div>
+
+<script>
+// ============================================================
+// DATA SINTETIS (tidak ada data nyata)
+// ============================================================
+const INIT_USERS = [
+  {username:"budi.s",     password:"Budi@2024",  nama:"Budi Santoso",       role:"mahasiswa", npm:"24781001"},
+  {username:"citra.d",    password:"Citra@2024", nama:"Citra Dewi",         role:"mahasiswa", npm:"24781002"},
+  {username:"andi.p",     password:"Andi@2024",  nama:"Andi Prasetyo",      role:"mahasiswa", npm:"24781003"},
+  {username:"rina.k",     password:"Rina@2024",  nama:"Rina Kartika",       role:"mahasiswa", npm:"24781004"},
+  {username:"yoga.f",     password:"Yoga@2024",  nama:"Yoga Firmansyah",    role:"mahasiswa", npm:"24781005"},
+  {username:"dr.hendra",  password:"Dosen@2024", nama:"Dr. Hendra Wijaya",  role:"dosen",     npm:"198803012"},
+  {username:"dr.sari",    password:"Dosen2@2024",nama:"Dr. Sari Utami",     role:"dosen",     npm:"199101045"},
+  {username:"sysadmin",   password:"Admin@2024", nama:"Administrator",       role:"admin",     npm:"ADM001"},
+];
+
+const MK_LIST = [
+  {kode:"KSI301",  nama:"Keamanan Sistem Informasi", sks:3},
+  {kode:"WEB302",  nama:"Pemrograman Web Lanjut",    sks:3},
+  {kode:"DBM201",  nama:"Manajemen Basis Data",      sks:3},
+  {kode:"NET401",  nama:"Jaringan Komputer",         sks:3},
+  {kode:"ALG101",  nama:"Algoritma & Pemrograman",   sks:2},
+  {kode:"MBL303",  nama:"Pemrograman Mobile",        sks:3},
+];
+
+const GRADE_MAP = {"A":4.0,"B+":3.5,"B":3.0,"C+":2.5,"C":2.0,"D":1.0,"E":0};
+
+// Nilai awal per NPM (sintetis, semua berbeda)
+const INIT_NILAI = {
+  "24781001":[
+    {kode:"KSI301",grade:"B+",sem:"5"},
+    {kode:"WEB302",grade:"A", sem:"5"},
+    {kode:"DBM201",grade:"B", sem:"4"},
+    {kode:"NET401",grade:"C+",sem:"4"},
+    {kode:"ALG101",grade:"A", sem:"3"},
+  ],
+  "24781002":[
+    {kode:"KSI301",grade:"A", sem:"5"},
+    {kode:"WEB302",grade:"B", sem:"5"},
+    {kode:"DBM201",grade:"A", sem:"4"},
+    {kode:"NET401",grade:"B+",sem:"4"},
+    {kode:"ALG101",grade:"B", sem:"3"},
+  ],
+  "24781003":[
+    {kode:"KSI301",grade:"C", sem:"5"},
+    {kode:"WEB302",grade:"C+",sem:"5"},
+    {kode:"DBM201",grade:"B", sem:"4"},
+    {kode:"NET401",grade:"B", sem:"4"},
+    {kode:"ALG101",grade:"C+",sem:"3"},
+  ],
+  "24781004":[
+    {kode:"KSI301",grade:"B", sem:"5"},
+    {kode:"WEB302",grade:"A", sem:"5"},
+    {kode:"DBM201",grade:"B+",sem:"4"},
+    {kode:"NET401",grade:"A", sem:"4"},
+    {kode:"ALG101",grade:"B+",sem:"3"},
+  ],
+  "24781005":[
+    {kode:"KSI301",grade:"D", sem:"5"},
+    {kode:"WEB302",grade:"C", sem:"5"},
+    {kode:"DBM201",grade:"C+",sem:"4"},
+    {kode:"NET401",grade:"C", sem:"4"},
+    {kode:"ALG101",grade:"D", sem:"3"},
+  ],
+};
+
+// ============================================================
+// STATE (localStorage, versi rentan)
+// ============================================================
+const KEY = "simak_rentan_v1";
+function load(){return JSON.parse(localStorage.getItem(KEY)||"null")}
+function save(s){localStorage.setItem(KEY,JSON.stringify(s))}
+
+function initState(){
+  let s = load();
+  if(!s){
+    s = {
+      users: INIT_USERS,
+      nilai: INIT_NILAI,
+      posts: [
+        {id:1, author:"Budi Santoso",    waktu:"2026-10-10 08:12", teks:"Halo semua! Ada yang sudah baca modul KSI minggu ini?"},
+        {id:2, author:"Citra Dewi",      waktu:"2026-10-10 09:45", teks:"Sudah! Bagian enkripsi simetris cukup menarik."},
+        {id:3, author:"Dr. Hendra Wijaya",waktu:"2026-10-10 10:00",teks:"Jangan lupa kerjakan latihan soal halaman 47!"},
+      ],
+      uploads:[
+        {id:1, npm:"24781001", nama:"Budi Santoso",  file:"tugas_ksi_budi.pdf",   ukuran:"245 KB", mk:"KSI301", ket:"Tugas 1 KSI",       waktu:"2026-10-12"},
+        {id:2, npm:"24781002", nama:"Citra Dewi",    file:"laporan_web_citra.pdf", ukuran:"312 KB", mk:"WEB302", ket:"Laporan Praktikum",  waktu:"2026-10-13"},
+        {id:3, npm:"24781003", nama:"Andi Prasetyo", file:"shell.php",             ukuran:"3 KB",   mk:"KSI301", ket:"webshell test",       waktu:"2026-10-14"},
+      ],
+      session: null,
+    };
+    save(s);
+  }
+  return s;
+}
+
+let STATE = initState();
+let currentUser = null;
+
+// ============================================================
+// LOGIN
+// ============================================================
+function doLogin(){
+  const u = document.getElementById("inp-user").value.trim();
+  const p = document.getElementById("inp-pass").value;
+  // RENTAN: tidak ada rate limit, tidak ada lockout
+  const found = STATE.users.find(x=>x.username===u && x.password===p);
+  if(!found){
+    document.getElementById("login-msg").innerHTML='<div class="msg msg-err">Username atau password salah.</div>';
+    return;
+  }
+  currentUser = found;
+  STATE.session = {username:u, role:found.role, npm:found.npm};
+  save(STATE);
+  showApp();
+}
+
+document.getElementById("inp-pass").addEventListener("keydown",e=>{if(e.key==="Enter")doLogin()});
+
+function doLogout(){
+  // KERENTANAN: session di localStorage tidak dihapus server-side (stateless dummy)
+  // tapi kita hapus lokal agar UI kembali ke login
+  STATE.session = null;
+  currentUser = null;
+  save(STATE);
+  location.reload();
+}
+
+document.getElementById("btn-logout").onclick = doLogout;
+
+// ============================================================
+// NAVIGASI
+// ============================================================
+function showApp(){
+  document.getElementById("sec-login").classList.remove("active");
+  document.getElementById("main-nav").style.display="flex";
+  document.getElementById("nav-user").textContent = currentUser.nama+" ("+currentUser.role+")";
+
+  if(currentUser.role==="admin"){
+    document.getElementById("nav-admin").style.display="";
+  }
+  if(currentUser.role==="dosen"){
+    document.getElementById("nav-dosen").style.display="";
+  }
+
+  document.querySelectorAll(".nav-btn").forEach(btn=>{
+    btn.addEventListener("click",()=>{
+      const sec = btn.dataset.sec;
+      switchSection(sec);
+    });
+  });
+
+  // default section
+  if(currentUser.role==="admin") switchSection("admin");
+  else if(currentUser.role==="dosen") switchSection("dosen");
+  else switchSection("nilai");
+}
+
+function switchSection(name){
+  document.querySelectorAll(".section").forEach(s=>s.classList.remove("active"));
+  document.querySelectorAll(".nav-btn").forEach(b=>b.classList.remove("active"));
+  document.getElementById("sec-"+name).classList.add("active");
+  document.querySelector(`.nav-btn[data-sec="${name}"]`)?.classList.add("active");
+  if(name==="nilai") renderNilai();
+  if(name==="tugas") renderTugas();
+  if(name==="diskusi") renderDiskusi();
+  if(name==="dosen") renderDosen();
+  if(name==="admin") renderAdmin();
+}
+
+// ============================================================
+// NILAI — KERENTANAN IDOR
+// ============================================================
+function getNpmTarget(){
+  // IDOR: baca ?npm= dari URL tanpa validasi kepemilikan
+  const params = new URLSearchParams(location.search);
+  return params.get("npm") || currentUser.npm;
+}
+
+function renderNilai(){
+  const npm = getNpmTarget();
+  document.getElementById("tampil-npm").textContent = npm;
+  document.getElementById("inp-npm-idor").value = npm;
+  const nilai = STATE.nilai[npm] || [];
+  let rows = "";
+  for(const n of nilai){
+    const mk = MK_LIST.find(m=>m.kode===n.kode);
+    const gr = n.grade;
+    const cls = gr==="A"?"badge-a":gr.startsWith("B")?"badge-b":gr.startsWith("C")?"badge-c":"badge-d";
+    rows+=`<tr>
+      <td>${mk?mk.nama:n.kode}</td>
+      <td>${mk?mk.sks:"-"}</td>
+      <td><span class="badge ${cls}">${gr}</span></td>
+      <td>${GRADE_MAP[gr]??"-"}</td>
+      <td>${n.sem}</td>
+    </tr>`;
+  }
+  if(!rows) rows=`<tr><td colspan="5" style="color:#94a3b8;text-align:center">Tidak ada data nilai untuk NPM ini.</td></tr>`;
+  document.getElementById("tbody-nilai").innerHTML = rows;
+}
+
+function loadNilaiIDOR(){
+  const npm = document.getElementById("inp-npm-idor").value.trim();
+  // RENTAN: langsung ganti URL tanpa cek apakah npm milik user sendiri
+  const url = new URL(location.href);
+  url.searchParams.set("npm", npm);
+  history.pushState({}, "", url);
+  renderNilai();
+}
+
+// ============================================================
+// TUGAS — UPLOAD (validasi berkas lemah)
+// ============================================================
+function renderTugas(){
+  // isi select mata kuliah
+  const sel = document.getElementById("sel-matkul");
+  sel.innerHTML = '<option value="">-- Pilih Mata Kuliah --</option>';
+  MK_LIST.forEach(m=>sel.innerHTML+=`<option value="${m.kode}">${m.nama}</option>`);
+
+  // tampilkan riwayat upload milik user ini
+  const npm = currentUser.npm;
+  const my = STATE.uploads.filter(u=> currentUser.role==="mahasiswa" ? u.npm===npm : true);
+  let html="";
+  for(const f of my){
+    html+=`<div class="fi">
+      <span class="fi-name">📄 ${f.file}</span>
+      <span class="fi-size">${f.ukuran}</span>
+      <span style="font-size:11px;color:#64748b">${f.mk} — ${f.ket}</span>
+      <span style="font-size:11px;color:#94a3b8">${f.waktu}</span>
+    </div>`;
+  }
+  document.getElementById("file-list").innerHTML = html||"<p style='color:#94a3b8;font-size:13px'>Belum ada upload.</p>";
+}
+
+function doUpload(){
+  const mk = document.getElementById("sel-matkul").value;
+  const ket = document.getElementById("inp-keterangan").value.trim();
+  const fi = document.getElementById("inp-file").files[0];
+  const msg = document.getElementById("upload-msg");
+  if(!mk||!fi){msg.innerHTML='<div class="msg msg-err">Pilih mata kuliah dan file.</div>';return;}
+  // RENTAN: tidak ada validasi ekstensi sama sekali
+  const entry={
+    id: Date.now(),
+    npm: currentUser.npm,
+    nama: currentUser.nama,
+    file: fi.name,
+    ukuran: (fi.size/1024).toFixed(0)+" KB",
+    mk,ket,
+    waktu: new Date().toISOString().slice(0,10)
+  };
+  STATE.uploads.push(entry);
+  save(STATE);
+  msg.innerHTML='<div class="msg msg-ok">File "'+fi.name+'" berhasil diupload (tanpa validasi tipe).</div>';
+  renderTugas();
+}
+
+// ============================================================
+// DISKUSI — KERENTANAN STORED XSS
+// ============================================================
+function renderDiskusi(){
+  STATE = load(); // reload agar XSS tersimpan muncul
+  let html="";
+  for(const p of [...STATE.posts].reverse()){
+    // RENTAN: langsung innerHTML tanpa escape — Stored XSS
+    html+=`<div class="post"><div class="meta">${p.author} — ${p.waktu}</div><div>${p.teks}</div></div>`;
+  }
+  document.getElementById("daftar-pesan").innerHTML = html||"<p style='color:#94a3b8;font-size:13px'>Belum ada pesan.</p>";
+}
+
+function kirimPesan(){
+  const teks = document.getElementById("inp-pesan").value;
+  if(!teks.trim()) return;
+  const entry = {
+    id: Date.now(),
+    author: currentUser.nama,
+    waktu: new Date().toLocaleString("id-ID"),
+    teks // RENTAN: disimpan apa adanya, tidak di-sanitize
+  };
+  STATE.posts.push(entry);
+  save(STATE);
+  document.getElementById("inp-pesan").value="";
+  renderDiskusi();
+}
+
+// ============================================================
+// DOSEN — BERI NILAI
+// ============================================================
+function renderDosen(){
+  const mhsList = STATE.users.filter(u=>u.role==="mahasiswa");
+  const selMhs = document.getElementById("sel-mhs-dosen");
+  selMhs.innerHTML="";
+  mhsList.forEach(m=>selMhs.innerHTML+=`<option value="${m.npm}">${m.nama} (${m.npm})</option>`);
+
+  const selMk = document.getElementById("sel-mk-dosen");
+  selMk.innerHTML="";
+  MK_LIST.forEach(m=>selMk.innerHTML+=`<option value="${m.kode}">${m.nama}</option>`);
+
+  renderDosenNilai();
+}
+
+function renderDosenNilai(){
+  const mhsList = STATE.users.filter(u=>u.role==="mahasiswa");
+  let rows="";
+  for(const mhs of mhsList){
+    const nilaiMhs = STATE.nilai[mhs.npm]||[];
+    for(const n of nilaiMhs){
+      const mk = MK_LIST.find(m=>m.kode===n.kode);
+      const gr=n.grade;
+      const cls=gr==="A"?"badge-a":gr.startsWith("B")?"badge-b":gr.startsWith("C")?"badge-c":"badge-d";
+      rows+=`<tr><td>${mhs.npm}</td><td>${mhs.nama}</td><td>${mk?mk.nama:n.kode}</td><td><span class="badge ${cls}">${gr}</span></td></tr>`;
+    }
+  }
+  document.getElementById("tbody-dosen-nilai").innerHTML=rows;
+}
+
+function beriNilai(){
+  const npm = document.getElementById("sel-mhs-dosen").value;
+  const kode = document.getElementById("sel-mk-dosen").value;
+  const grade = document.getElementById("sel-grade").value;
+  const msg = document.getElementById("dosen-msg");
+  if(!STATE.nilai[npm]) STATE.nilai[npm]=[];
+  const idx = STATE.nilai[npm].findIndex(n=>n.kode===kode);
+  if(idx>=0) STATE.nilai[npm][idx].grade=grade;
+  else STATE.nilai[npm].push({kode,grade,sem:"5"});
+  save(STATE);
+  msg.innerHTML='<div class="msg msg-ok">Nilai berhasil disimpan.</div>';
+  renderDosenNilai();
+  setTimeout(()=>msg.innerHTML="",3000);
+}
+
+// ============================================================
+// ADMIN — KELOLA AKUN
+// ============================================================
+function renderAdmin(){
+  // RENTAN: tidak ada cek apakah user berhak, hanya disembunyikan di UI
+  let rows="";
+  for(const u of STATE.users){
+    rows+=`<tr>
+      <td>${u.username}</td>
+      <td>${u.nama}</td>
+      <td>${u.role}</td>
+      <td>${u.npm}</td>
+      <td><button class="btn btn-danger btn-sm" onclick="hapusAkun('${u.username}')">Hapus</button></td>
+    </tr>`;
+  }
+  document.getElementById("tbody-admin").innerHTML=rows;
+}
+
+function hapusAkun(uname){
+  if(uname===currentUser.username){alert("Tidak bisa hapus akun sendiri.");return;}
+  STATE.users = STATE.users.filter(u=>u.username!==uname);
+  save(STATE);
+  renderAdmin();
+}
+
+function tambahAkun(){
+  const u=document.getElementById("new-uname").value.trim();
+  const p=document.getElementById("new-pass").value.trim();
+  const n=document.getElementById("new-nama").value.trim();
+  const npm=document.getElementById("new-npm").value.trim();
+  const r=document.getElementById("new-role").value;
+  const msg=document.getElementById("admin-msg");
+  if(!u||!p||!n||!npm){msg.innerHTML='<div class="msg msg-err">Semua field wajib diisi.</div>';return;}
+  if(STATE.users.find(x=>x.username===u)){msg.innerHTML='<div class="msg msg-err">Username sudah ada.</div>';return;}
+  STATE.users.push({username:u,password:p,nama:n,role:r,npm});
+  save(STATE);
+  msg.innerHTML='<div class="msg msg-ok">Akun berhasil ditambahkan.</div>';
+  renderAdmin();
+  ["new-uname","new-pass","new-nama","new-npm"].forEach(id=>document.getElementById(id).value="");
+}
+
+// ============================================================
+// AUTO-LOGIN jika session tersimpan (RENTAN: tidak di-expire)
+// ============================================================
+(function(){
+  if(STATE.session){
+    const u=STATE.users.find(x=>x.username===STATE.session.username);
+    if(u){currentUser=u;showApp();}
+  }
+})();
+</script>
+</body>
+</html>
