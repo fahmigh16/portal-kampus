@@ -1,0 +1,14 @@
+   <!DOCTYPE html>
+   <html lang="id">
+   <head>
+     <meta charset="UTF-8">
+     <meta name="viewport" content="width=device-width, initial-scale=1">
+     <title>Kantin Voucher</title>
+   </head>
+   <body>
+     <h1>Kantin Voucher</h1>
+     <ul>
+       <li><a href="portal-kampus.html">Versi Rentan</a></li>
+     </ul>
+   </body>
+   </html>
